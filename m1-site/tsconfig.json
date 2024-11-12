@@ -29,7 +29,7 @@
   "include": [
     "src",
     ".next/types/**/*.ts"
-  ],
+, "src/index.js"  ],
   "exclude": [
     "node_modules"
   ]
