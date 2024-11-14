@@ -8,7 +8,7 @@ config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.enableCors();
+  app.enableCors(); //Activer Cors pour permetre l'acces a l'API depuis le front-End React
   await app.listen(process.env.PORT);
 
   console.log(`🚀 API listening on PORT ${process.env.PORT}`);
