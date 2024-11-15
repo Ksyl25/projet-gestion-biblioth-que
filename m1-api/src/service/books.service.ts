@@ -8,10 +8,10 @@ import { BookPresenter } from '../presenter/book.presenter';
 export class BooksService {
   constructor(
     private booksRepository: BooksRepository,
-  ) {}
+  ) { }
 
   findAll(): Promise<CreateBookDto[]> {
-    return this.booksRepository.find({ relations: ['author', 'reviews'] }).then(books => 
+    return this.booksRepository.find({ relations: ['author', 'reviews'] }).then(books =>
       books.map(book => BookPresenter.toDto(book))
     );
   }
@@ -32,4 +32,5 @@ export class BooksService {
   async remove(id: number): Promise<void> {
     await this.booksRepository.delete(id);
   }
+
 }

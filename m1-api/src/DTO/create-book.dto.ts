@@ -4,5 +4,5 @@ export class CreateBookDto {
   readonly book_title: string;
   readonly book_price: number;
   readonly book_published_date: string;
-  readonly book_author_id: number;
+  //readonly book_author_id: number;
 }

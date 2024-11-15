@@ -21,6 +21,8 @@ import { Book } from './modèles/book.entity';     // Remplace par le bon chemin
 import { Connection } from 'typeorm';  // Assurez-vous que 'Connection' est bien importé depuis 'typeorm'
 import { OnModuleInit } from '@nestjs/common'; // Assurez-vous que 'OnModuleInit' est bien importé depuis '@nestjs/common'
 import { AuthorsModule } from './modules/authors.module';
+import { BooksModule } from './modules/books.module';
+import { BookReviewsModule } from './modules/book-reviews.module';
 
 
 
@@ -33,7 +35,7 @@ import { AuthorsModule } from './modules/authors.module';
       synchronize: true, // Active la synchronisation des entités avec la base de données
     }),
     TypeOrmModule.forFeature([Author, Book, BookReview]), // Ajoute tes modules ici
-    AuthorsModule,
+    AuthorsModule, BooksModule, BookReviewsModule,
   ],
   exports: [TypeOrmModule], // Exporte TypeOrmModule pour l'utiliser dans d'autres modules
 })

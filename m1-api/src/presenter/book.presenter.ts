@@ -9,7 +9,7 @@ export class BookPresenter {
       book_title: book.book_title,
       book_price: book.book_price,
       book_published_date: book.book_published_date,
-      book_author_id: book.author.author_id,
+      //book_author_id: book.author.author_id,
     };
   }
 
