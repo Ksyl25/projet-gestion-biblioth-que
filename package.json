@@ -1,0 +1,12 @@
+{
+    "name": "projet-gestion-bibliotheque",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "pnpm run start:m1-api && pnpm run start:m1-site",
+        "start:m1-api": "cd m1-api && pnpm run start",
+        "start:m1-site": "cd m1-site && pnpm run dev"
+    },
+    "devDependencies": {
+        "concurrently": "^7.0.0"
+    }
+}

@@ -1,4 +1,4 @@
-CREATE TABLE authors (
+ : CREATE TABLE authors (
     author_id INTEGER PRIMARY KEY AUTOINCREMENT,
     author_name TEXT NOT NULL,
     photo_url TEXT,
