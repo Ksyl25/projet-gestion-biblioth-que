@@ -5,7 +5,7 @@ import { AuthorPresenter } from '../presenter/author.presenter';
 
 @Controller('authors')
 export class AuthorsController {
-  constructor(private readonly authorsService: AuthorsService) {}
+  constructor(private readonly authorsService: AuthorsService) { }
 
   @Get()
   findAll(): Promise<CreateAuthorDto[]> {
@@ -19,7 +19,8 @@ export class AuthorsController {
 
   @Post()
   create(@Body() createAuthorDto: CreateAuthorDto): Promise<CreateAuthorDto> {
-    return this.authorsService.create(createAuthorDto).then(author => 
+    console.log('Requête POST reçue avec le corps:', createAuthorDto);
+    return this.authorsService.create(createAuthorDto).then(author =>
       AuthorPresenter.toDto(author)
     );
   }

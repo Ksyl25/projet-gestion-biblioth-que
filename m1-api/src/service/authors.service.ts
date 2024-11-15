@@ -9,10 +9,13 @@ import { AuthorPresenter } from '../presenter/author.presenter';
 export class AuthorsService {
   constructor(
     private authorsRepository: AuthorsRepository,
-  ) {}
+  ) { }
 
   findAll(): Promise<CreateAuthorDto[]> {
-    return this.authorsRepository.find({ relations: ['books'] }).then(authors => 
+
+    console.log("Fetching all authors");
+
+    return this.authorsRepository.find({ relations: ['books'] }).then(authors =>
       authors.map(author => AuthorPresenter.toDto(author))
     );
   }

@@ -10,7 +10,7 @@ import { BookReviewsModule } from './modules/book-reviews.module';
   imports: [DatabaseModule, BooksModule, AuthorsModule, BookReviewsModule],
   controllers: [AppController],
   providers: [AppService],
-})
+})  
 export class AppModule {}*/
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -20,17 +20,20 @@ import { Book } from './modèles/book.entity';     // Remplace par le bon chemin
 //import { BookReview } from '../src/modèles/book-review.entity'; // Remplace par le bon chemin
 import { Connection } from 'typeorm';  // Assurez-vous que 'Connection' est bien importé depuis 'typeorm'
 import { OnModuleInit } from '@nestjs/common'; // Assurez-vous que 'OnModuleInit' est bien importé depuis '@nestjs/common'
+import { AuthorsModule } from './modules/authors.module';
+
 
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'path/to/your/database.db', // Remplace par le chemin réel de ta base SQLite
+      database: '../database/database_bibli.sqlite', // Remplace par le chemin réel de ta base SQLite
       entities: [Author, Book, BookReview], // Liste des entités que tu utilises
       synchronize: true, // Active la synchronisation des entités avec la base de données
     }),
     TypeOrmModule.forFeature([Author, Book, BookReview]), // Ajoute tes modules ici
+    AuthorsModule,
   ],
   exports: [TypeOrmModule], // Exporte TypeOrmModule pour l'utiliser dans d'autres modules
 })
