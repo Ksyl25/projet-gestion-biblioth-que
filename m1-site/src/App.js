@@ -6,6 +6,8 @@ import Acceuil from './pages/acceuil';
 import Authors from './pages/auteur';
 import Books from './pages/book';
 import BooksPage from './pages/books';
+import BookDetails from './pages/BookDetails';
+
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
           <Route path="/auteur" element={<Authors />} />
           <Route path="/book" element={<Books />} />
           <Route path="/books" element={<BooksPage />} />
+          <Route path="/books/:slug" element={<BookDetails />} />
+
         </Routes>
       </Layout>
     </Router>

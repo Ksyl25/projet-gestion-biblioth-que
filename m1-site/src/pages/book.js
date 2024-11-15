@@ -1,96 +1,169 @@
-// src/pages/Books/Books.js
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import React, { useState } from 'react';
-import Breadcrumb from '../components/breadcrumbs';
-import Button from '../components/button';
-import Modal from '../components/modal';
-import Input from '../components/input';
-import List from '../components/list';
+// Fonction utilitaire pour convertir un titre en slug
+const slugify = (text) =>
+  text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Retirer les caractères non alphanumériques
+    .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
+    .trim();
 
 function Books() {
-  // State pour stocker la liste des livres
-  const [books, setBooks] = useState([
-    // Données de test pour les livres, à remplacer plus tard par des données de base de données
-    { id: 1, title: 'Livre Exemple 1', author: 'Auteur 1', date: '2022', rating: 4 },
-    { id: 2, title: 'Livre Exemple 2', author: 'Auteur 2', date: '2021', rating: 5 },
-  ]);
-
-  // State pour le terme de recherche de livre par titre
+  const [books, setBooks] = useState([]);
   const [search, setSearch] = useState('');
-  // State pour gérer l'ouverture et la fermeture du modal d'ajout de livre
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // State pour les données du nouveau livre à ajouter
-  const [newBook, setNewBook] = useState({ title: '', author: '', date: '' });
+  const [newBook, setNewBook] = useState({
+    book_title: '',
+    book_name: '',
+    book_price: '',
+    book_published_date: '',
+    book_wrote_date: '',
+  });
 
-  // Filtrer les livres en fonction du titre recherché
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(search.toLowerCase())
-  );
+  // Charger les livres depuis l'API
+  useEffect(() => {
+    fetch('http://localhost:3001/books')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des livres');
+        }
+        return response.json();
+      })
+      .then((data) => setBooks(data))
+      .catch((error) => console.error('Erreur de récupération des livres:', error));
+  }, []);
 
-  // Fonction pour ajouter un nouveau livre à la liste
+  // Fonction pour ajouter un nouveau livre
   const handleAddBook = () => {
-    // Générer un nouvel id pour le livre en fonction de la longueur de la liste actuelle
-    const id = books.length ? books[books.length - 1].id + 1 : 1;
-    // Ajouter une note initiale de 0 pour chaque nouveau livre
-    const bookWithId = { ...newBook, id, rating: 0 };
-    // Mettre à jour la liste des livres en ajoutant le nouveau livre
-    setBooks([...books, bookWithId]);
-    // Fermer le modal et réinitialiser le formulaire
-    setIsModalOpen(false);
-    setNewBook({ title: '', author: '', date: '' });
+    fetch('http://localhost:3001/books', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newBook),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de l\'ajout du livre');
+        }
+        return response.json();
+      })
+      .then((createdBook) => {
+        // Ajouter le nouveau livre à la liste existante
+        setBooks((prevBooks) => [...prevBooks, createdBook]);
+        setIsModalOpen(false); // Fermer le modal
+        setNewBook({ book_title: '', book_name: '', book_price: '', book_published_date: '', book_wrote_date: '' }); // Réinitialiser le formulaire
+      })
+      .catch((error) => console.error('Erreur lors de l\'ajout du livre:', error));
   };
+
+  // Filtrer les livres par titre
+  const filteredBooks = books.filter((book) =>
+    book.book_title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div>
-      {/* Affichage du breadcrumb personnalisé */}
-      <Breadcrumb />
-      {/* Titre principal de la page */}
       <h1 className="text-3xl font-bold my-4">Liste des livres</h1>
 
-      {/* Champ de recherche pour filtrer les livres par titre */}
-      <Input
-        label="Rechercher par titre"
+      {/* Champ de recherche */}
+      <input
+        type="text"
+        placeholder="Rechercher par titre"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className="border p-2 mb-4"
       />
-      {/* Bouton pour ouvrir le modal d'ajout de livre */}
-      <Button onClick={() => setIsModalOpen(true)}>Ajouter un livre</Button>
 
-      {/* Liste des livres filtrés affichés dynamiquement */}
-      <List
-        items={filteredBooks}
-        renderItem={(book) => (
-          <div key={book.id}>
-            <h2 className="text-xl">{book.title}</h2>
-            <p>Auteur : {book.author}</p>
-            <p>Date : {book.date}</p>
-            <p>Note moyenne : {book.rating} ⭐️</p>
+      {/* Bouton pour ajouter un livre */}
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="bg-blue-500 text-white px-4 py-2 mb-4 rounded"
+      >
+        Ajouter un livre
+      </button>
+
+      {/* Liste des livres */}
+      <ul>
+        {filteredBooks.map((book) => (
+          <li key={book.book_title} className="mb-2">
+            <h2 className="text-xl font-semibold">{book.book_title}</h2>
+            <Link
+              to={`/books/${slugify(book.book_title)}`}
+              className="text-blue-500 underline"
+            >
+              Voir les détails
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      {/* Modal pour ajouter un livre */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <h2 className="text-2xl font-bold mb-4">Ajouter un nouveau livre</h2>
+            <div className="mb-2">
+              <label className="block text-sm font-medium mb-1">Titre :</label>
+              <input
+                type="text"
+                value={newBook.book_title}
+                onChange={(e) => setNewBook({ ...newBook, book_title: e.target.value })}
+                className="border p-2 w-full"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium mb-1">Auteur :</label>
+              <input
+                type="text"
+                value={newBook.book_name}
+                onChange={(e) => setNewBook({ ...newBook, book_name: e.target.value })}
+                className="border p-2 w-full"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium mb-1">Prix :</label>
+              <input
+                type="number"
+                value={newBook.book_price}
+                onChange={(e) => setNewBook({ ...newBook, book_price: e.target.value })}
+                className="border p-2 w-full"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium mb-1">Date de publication :</label>
+              <input
+                type="date"
+                value={newBook.book_published_date}
+                onChange={(e) => setNewBook({ ...newBook, book_published_date: e.target.value })}
+                className="border p-2 w-full"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium mb-1">Date de rédaction :</label>
+              <input
+                type="date"
+                value={newBook.book_wrote_date}
+                onChange={(e) => setNewBook({ ...newBook, book_wrote_date: e.target.value })}
+                className="border p-2 w-full"
+              />
+            </div>
+            <button
+              onClick={handleAddBook}
+              className="bg-green-500 text-white px-4 py-2 mt-4 rounded"
+            >
+              Enregistrer
+            </button>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="bg-red-500 text-white px-4 py-2 mt-4 ml-4 rounded"
+            >
+              Annuler
+            </button>
           </div>
-        )}
-      />
-
-      {/* Modal pour ajouter un nouveau livre */}
-      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h2 className="text-2xl mb-4">Ajouter un nouveau livre</h2>
-        {/* Champs pour entrer le titre, l'auteur et la date du nouveau livre */}
-        <Input
-          label="Titre"
-          value={newBook.title}
-          onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
-        />
-        <Input
-          label="Auteur"
-          value={newBook.author}
-          onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
-        />
-        <Input
-          label="Date de publication"
-          value={newBook.date}
-          onChange={(e) => setNewBook({ ...newBook, date: e.target.value })}
-        />
-        {/* Bouton pour enregistrer le nouveau livre dans la liste */}
-        <Button onClick={handleAddBook}>Enregistrer</Button>
-      </Modal>
+        </div>
+      )}
     </div>
   );
 }
