@@ -1,6 +1,9 @@
 
 
 import React, { useState } from 'react';
+import './auteur.css';
+
+import {Link , useNavigate } from 'react-router-dom';
 import Breadcrumb from '../components/breadcrumbs';
 import Button from '../components/button';
 import Modal from '../components/modal';
@@ -72,7 +75,8 @@ function Authors() {
             {/* Affichage de la photo de l'auteur */}
             <img src={author.photoUrl} alt={author.name} className="w-24 h-24 rounded-full" />
             <div>
-              <h2 className="text-xl font-semibold">{author.name}</h2>
+            <Link to={`/auteur/${author.id}`} className="text-xl font-semibold">{author.name}</Link>
+
               <p>Date de naissance : {author.bDate}</p>
               <p>Nationalité : {author.nationalite}</p>
               <p>Nombre de livres écrits : {author.booksC}</p>

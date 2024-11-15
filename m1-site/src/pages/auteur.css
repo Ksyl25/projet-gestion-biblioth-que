@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles spécifiques au composant Authors */
+.authors-container {
+    @apply bg-gray-100 min-h-screen;
+}
+
+.authors-header {
+    @apply text-3xl font-extrabold text-gray-900 mt-6;
+}
+
+.authors-search-input {
+    @apply w-full max-w-md px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500;
+}
+
+.authors-add-button {
+    @apply bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition;
+}
+
+.authors-list {
+    @apply grid grid-cols-1 gap-6 mt-8;
+}
+
+.authors-card {
+    @apply flex items-center bg-white rounded-lg shadow p-6 space-x-6;
+}
+
+.authors-image {
+    @apply w-24 h-24 rounded-full object-cover;
+}
+
+.authors-name {
+    @apply text-xl font-semibold text-indigo-600 hover:underline;
+}
+
+.modal-container {
+    @apply p-6 bg-white rounded-lg shadow-xl;
+}
+
+.modal-header {
+    @apply text-2xl font-bold text-gray-900 mb-4;
+}
+
+.modal-input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500;
+}
+
+.modal-button {
+    @apply bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-indigo-700 transition;
+}

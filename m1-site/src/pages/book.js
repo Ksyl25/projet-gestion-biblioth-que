@@ -1,6 +1,6 @@
-// src/pages/Books/Books.js
 
 import React, { useState } from 'react';
+import {Link , useNavigate } from 'react-router-dom';
 import Breadcrumb from '../components/breadcrumbs';
 import Button from '../components/button';
 import Modal from '../components/modal';
@@ -58,16 +58,18 @@ function Books() {
 
       {/* Liste des livres filtrés affichés dynamiquement */}
       <List
-        items={filteredBooks}
-        renderItem={(book) => (
-          <div key={book.id}>
-            <h2 className="text-xl">{book.title}</h2>
-            <p>Auteur : {book.author}</p>
-            <p>Date : {book.date}</p>
-            <p>Note moyenne : {book.rating} ⭐️</p>
-          </div>
-        )}
-      />
+  items={filteredBooks}
+  renderItem={(book) => (
+    <div key={book.id}>
+      {/* Transmettre uniquement les données nécessaires via state */}
+      <Link to={`/book/${book.id}`} state={{ book }}>Voir détails</Link>
+      <p>Auteur : {book.author}</p>
+      <p>Date : {book.date}</p>
+      <p>Note moyenne : {book.rating} ⭐️</p>
+    </div>
+  )}
+/>
+
 
       {/* Modal pour ajouter un nouveau livre */}
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Button, Container, Drawer, List, ListItem, ListItemText , Link} from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Button, Container, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
 const Layout = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -25,9 +26,6 @@ const Layout = ({ children }) => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             BIBLIO JUNIA 
           </Typography>
-          <Button color="inherit">Accueil</Button>
-          <Button color="inherit">À propos</Button>
-          <Button color="inherit">Contact</Button>
         </Toolbar>
       </AppBar>
 
@@ -39,17 +37,17 @@ const Layout = ({ children }) => {
           onKeyDown={toggleDrawer(false)}
           style={{ width: 250 }}
         >
-         <List>
-            <ListItem button component={Link} to="/accueil">
-            <ListItemText primary="Accueil" />
+          <List>
+            <ListItem button component={Link} to="/">
+              <ListItemText primary="Accueil" />
             </ListItem>
             <ListItem button component={Link} to="/auteur">
-            <ListItemText primary="Auteur" />
+              <ListItemText primary="Auteur" />
             </ListItem>
-             <ListItem button component={Link} to="/book">
-            <ListItemText primary="Book" />
+            <ListItem button component={Link} to="/book">
+              <ListItemText primary="Book" />
             </ListItem>
-            </List>
+          </List>
         </div>
       </Drawer>
 
@@ -57,7 +55,6 @@ const Layout = ({ children }) => {
       <Container sx={{ mt: 4 }}>
         {children}
       </Container>
-
     </div>
   );
 };
