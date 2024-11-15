@@ -5,6 +5,7 @@ import Layout from './components/layout';
 import Acceuil from './pages/acceuil';
 import Authors from './pages/auteur';
 import Books from './pages/book';
+import BooksPage from './pages/books';
 
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Acceuil />} />
           <Route path="/auteur" element={<Authors />} />
-          <Route path="/book" element={<Books/>} />
+          <Route path="/book" element={<Books />} />
+          <Route path="/books" element={<BooksPage />} />
         </Routes>
       </Layout>
     </Router>
